@@ -1,0 +1,49 @@
+{
+  "method": "Every tenth native latitude/longitude coordinate, 0.1 degree spacing; area weighted",
+  "validationToleranceDegC": 0.05,
+  "checks": [
+    {
+      "region": "eep",
+      "month": "2013-01",
+      "nativeMean": 24.439701656440104,
+      "sampledMean": 24.45086608478305,
+      "absoluteDifferenceDegC": 0.01116442834294773
+    },
+    {
+      "region": "eep",
+      "month": "2019-07",
+      "nativeMean": 24.64777697703574,
+      "sampledMean": 24.660985299143952,
+      "absoluteDifferenceDegC": 0.013208322108212656
+    },
+    {
+      "region": "eep",
+      "month": "2025-10",
+      "nativeMean": 23.6937110104088,
+      "sampledMean": 23.706246049582088,
+      "absoluteDifferenceDegC": 0.012535039173286577
+    },
+    {
+      "region": "nwp",
+      "month": "2013-01",
+      "nativeMean": 28.943512109376492,
+      "sampledMean": 28.94305254562093,
+      "absoluteDifferenceDegC": 0.0004595637555624421
+    },
+    {
+      "region": "nwp",
+      "month": "2019-07",
+      "nativeMean": 29.69512222637877,
+      "sampledMean": 29.696240521061533,
+      "absoluteDifferenceDegC": 0.0011182946827617002
+    },
+    {
+      "region": "nwp",
+      "month": "2025-10",
+      "nativeMean": 30.114048077471992,
+      "sampledMean": 30.113361635044896,
+      "absoluteDifferenceDegC": 0.0006864424270958125
+    }
+  ],
+  "limitation": "Six native-grid checks bound observed sample differences only; they do not guarantee every month's spatial sampling error."
+}

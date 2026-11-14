@@ -1,0 +1,66 @@
+.venv/
+node_modules/
+dist/
+__pycache__/
+.pytest_cache/
+.cache/
+.superpowers/
+.worktrees/
+.env*
+!.env.example
+.cdsapirc
+.netrc
+_netrc
+data/raw/
+artifacts/private/
+artifacts/reviews/
+artifacts/browser-results/
+artifacts/screenshots/
+test-results/
+*.log
+
+# Private credentials
+.env
+.env.*
+!.env.example
+.cdsapirc
+.netrc
+_netrc
+
+# Dependencies and environments
+node_modules/
+.venv/
+venv/
+__pycache__/
+.pytest_cache/
+
+# Build and temporary files
+dist/
+build/
+coverage/
+*.log
+*.zip
+
+# Large scientific source data
+data/raw/
+*.nc
+*.nc4
+*.h5
+*.hdf
+*.zarr/
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Temporary data-processing directories
+.chart-data-*/
+
+# Local scientific data downloads
+downloads/
+
+# Local access diagnostics
+data/access-status.json
+
+# Generated slide previews
+artifacts/submission/slides/

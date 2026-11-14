@@ -1,0 +1,22 @@
+{
+  "status": "verified",
+  "month": "2013-01",
+  "source": "nasa-modis-r2022-verification",
+  "results": {
+    "eep": {
+      "value": 0.1799513735729805,
+      "coverage": 0.9817856554375037,
+      "validCells": 169306,
+      "oceanCells": 172449
+    },
+    "nwp": {
+      "value": 0.06965586061011934,
+      "coverage": 0.9810194908337417,
+      "validCells": 110516,
+      "oceanCells": 112651
+    }
+  },
+  "granuleProcessingVersion": "R2022.0",
+  "sha256": "29b832ce6dc92716032965ac3f5a89c7154bd6c1166bf45d00f4738616209a72",
+  "note": "One authentic NASA MODIS Aqua monthly record is used as a separate source verification. Different algorithms and masks can produce different concentrations; one month does not verify trend agreement."
+}
