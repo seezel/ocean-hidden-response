@@ -3,7 +3,7 @@ import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
 export const PUBLIC_FILES = Object.freeze([
-  'index.html', 'assets/styles.css', 'src/app.js', 'src/charts.js', 'src/data.js',
+  'index.html', 'assets/styles.css', 'assets/logo-mark.svg', 'assets/BRAND-SOURCES.md', 'assets/favicon.svg', 'assets/favicon.ico', 'assets/favicon-16x16.png', 'assets/favicon-32x32.png', 'assets/apple-touch-icon.png', 'assets/social-preview.png', 'src/navigation.js', 'src/app.js', 'src/charts.js', 'src/data.js',
   'src/trends.js', 'src/ui-state.js', 'data/observations.json',
   'src/uncertainty.js', 'src/locator.js', 'assets/ne_110m_land.geojson',
   'src/url-state.js', 'src/selection-export.js',

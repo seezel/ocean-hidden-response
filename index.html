@@ -4,22 +4,32 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Examine historical satellite surface chlorophyll-a and sea surface temperature in two Pacific regions, with reproducible trend estimates and source records.">
-  <meta name="theme-color" content="#242b2c">
+  <meta name="theme-color" content="#091e32">
   <title>The Ocean's Hidden Response | Pacific observation archive</title>
+  <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg">
+  <link rel="alternate icon" href="./assets/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="16x16" href="./assets/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon-32x32.png">
+  <link rel="apple-touch-icon" href="./assets/apple-touch-icon.png">
+  <meta property="og:title" content="The Ocean's Hidden Response">
+  <meta property="og:description" content="Explore satellite observations in two Pacific regions.">
+  <meta property="og:image" content="./assets/social-preview.png">
   <link rel="stylesheet" href="./assets/styles.css">
   <script type="module" src="./src/app.js"></script>
+  <script type="module" src="./src/navigation.js"></script>
 </head>
 <body>
   <a class="skip-link" href="#investigation">Skip to investigation</a>
   <header class="masthead">
     <div class="page-width masthead-inner">
-      <span>Pacific observation archive</span>
-      <nav aria-label="Page sections"><a href="#methods">Methods &amp; sources</a><a href="#downloads">Download records</a></nav>
+      <a class="brand" href="#top"><svg class="brand-mark" aria-hidden="true" viewBox="0 0 64 64"><circle cx="32" cy="32" r="27" fill="none" stroke="currentColor" stroke-width="5"/><path d="M13 35c8-9 15-11 23-7 6 3 10 3 15-2M14 43c8-7 14-8 21-5 6 3 10 3 15 0" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg><span><strong>The Ocean's Hidden Response</strong><small>Deep Ocean Observatory</small></span></a>
+      <button class="menu-toggle" id="menu-toggle" type="button" aria-expanded="false" aria-controls="main-navigation" hidden>Menu</button>
+      <nav id="main-navigation" aria-label="Page sections"><a href="#investigation">Explore</a><a href="#locator-title">Regions</a><a href="#reference-findings">Findings</a><a href="#methods">Sources</a></nav>
     </div>
   </header>
-  <main class="page-width">
-    <div class="introduction">
-      <h1>The Ocean's Hidden Response</h1>
+  <main id="top">
+    <section class="hero"><div class="page-width hero-inner"><div><h1>Explore the hidden patterns of our oceans.</h1><p class="hero-lead">Investigate satellite-observed chlorophyll and sea surface temperature across two regions of the Pacific Ocean.</p><a class="hero-action" href="#investigation">Explore observations <span aria-hidden="true">↗</span></a><p class="hero-note">Reference period: 2013–2025</p></div><div class="hero-map"><div id="hero-locator"><p>Loading the Pacific map.</p></div><p>Two predefined regions <span aria-hidden="true">·</span> One shared ocean</p></div></div></section>
+    <div class="page-width"><div class="introduction">
       <p id="research-question">How did surface chlorophyll-a change in two Pacific regions, and do their relative trends differ?</p>
       <p id="reference-summary" role="status">Loading the fixed January 2013 to December 2025 reference finding.</p>
       <p>Satellite chlorophyll-a indicates near-surface phytoplankton pigment. It does not measure total ocean biomass. Sea surface temperature provides a companion record.</p>
@@ -28,7 +38,7 @@
 
     <section id="investigation" aria-labelledby="investigation-title">
       <div class="section-heading">
-        <h2 id="investigation-title">Historical observations</h2>
+        <h2 id="investigation-title">Follow the observations.</h2>
         <span id="investigation-mode">Loading reference investigation</span>
       </div>
       <form id="controls" novalidate>
@@ -79,9 +89,20 @@
     </section>
 
     <div class="supporting-grid">
-      <section class="locator" aria-labelledby="locator-title"><h2 id="locator-title">Two fixed Pacific regions</h2><div id="locator-chart"><p>Regional bounds will appear with the source data.</p></div><div id="region-bounds"></div><p id="locator-note" class="muted"></p><p>These predefined reference regions provide two Pacific surface records to compare. Their different locations are context, not a controlled causal experiment. These observations alone cannot identify the mechanisms behind a trend.</p></section>
+      <section class="locator" aria-labelledby="locator-title"><h2 id="locator-title">Two windows into the Pacific.</h2><div id="locator-chart"><p>Regional bounds will appear with the source data.</p></div><div id="region-bounds"></div><p id="locator-note" class="muted"></p><p>These predefined reference regions provide two Pacific surface records to compare. Their different locations are context, not a controlled causal experiment. These observations alone cannot identify the mechanisms behind a trend.</p></section>
+    </div>
+    <section id="reference-findings" class="reference-findings" aria-labelledby="reference-findings-title">
+      <h2 id="reference-findings-title">Read the estimate with its uncertainty.</h2>
+      <p class="reference-period">Fixed reference: January 2013 to December 2025</p>
+      <div class="finding-grid">
+        <article><h3>Chlorophyll</h3><p>Regional trends · % per decade</p><div id="reference-chlorophyll" class="interval-chart">Loading reference findings…</div></article>
+        <article><h3>Sea surface temperature</h3><p>Regional trends · °C per decade</p><div id="reference-temperature" class="interval-chart">Loading reference findings…</div></article>
+        <article class="reference-comparison"><h3>Direct regional comparison</h3><p>Relative growth-rate ratio · % per decade</p><div id="reference-comparison" class="interval-chart">Loading reference findings…</div></article>
+      </div>
+    </section>
+    <div class="supporting-grid methods-grid">
       <section id="methods" class="methods" aria-labelledby="methods-title">
-        <h2 id="methods-title">Read the record carefully</h2>
+        <h2 id="methods-title">Know what is behind the view.</h2>
         <p>These are historical satellite estimates. A regional association between temperature and chlorophyll does not establish its cause.</p>
         <p>Source roles: <strong>NOAA VIIRS</strong> supplies the main chlorophyll record. <strong>NASA JPL MUR</strong>, distributed as a NOAA monthly composite, supplies temperature. A separate <strong>NASA MODIS Aqua</strong> month checks an aggregation example; it does not validate the long-term trends or guarantee challenge eligibility.</p>
         <details class="record-details"><summary>How the trends are estimated</summary><div class="reading"><p>Each estimate fits a linear time trend with a separate effect for each calendar month, so the recurring seasonal cycle is accounted for. Chlorophyll is modelled on a natural-log scale; its rate is expressed as percent change per decade. Temperature is modelled in degrees Celsius and is never a percentage.</p><p>The chart's trend averages the fitted calendar-month effects equally, retaining the fitted slope. Chlorophyll's absolute change is anchored to the geometric mean of valid observations in the first 12 calendar months of the selected window. This is concentration context, not an independent absolute-slope model.</p><p>The direct regional test fits the difference of EEP and NWP log chlorophyll on months valid in both regions. It tests a relative growth-rate difference. Different individual p-values do not establish a difference between regions.</p><p>Intervals and p-values use approximate Student t inference with calendar-spaced Bartlett heteroskedasticity and autocorrelation consistent (HAC) uncertainty. They are sensitive to modelling assumptions. A 95% interval spanning zero leaves the direction inconclusive under this model; it does not prove an absence of change.</p><p>A conservative project policy requires at least 120 calendar months and 120 valid observations, at least 85% completeness, five observations for each calendar month, and no gap longer than six months. A month needs at least 10% valid regional coverage. These thresholds are screening rules, not universal guarantees of reliable inference.</p><p>Changing dates creates an exploratory investigation. Repeatedly searching windows for small p-values increases the risk of misleading findings. Treat custom-window inference as exploratory.</p><p id="model-record"></p></div></details>
@@ -92,7 +113,7 @@
     </div>
 
     <section id="downloads" class="downloads" aria-labelledby="downloads-title"><div><h2 id="downloads-title">Keep the evidence</h2><p>Download the observations or reproduce the reference calculation using the included source, methods and README.</p></div><div class="download-links"><a href="./downloads/observations.csv" download>Observation CSV</a><a href="./downloads/reproduction.zip" download>Reproduction package (.zip)</a></div></section>
-  </main>
+  </div></main>
   <footer class="page-width"><span>The Ocean's Hidden Response</span><span>Historical research tool · NASA Space Apps Challenge 2026, Yogyakarta</span></footer>
 </body>
 </html>

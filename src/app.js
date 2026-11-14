@@ -27,15 +27,41 @@ function syncUrl(replace=false) {
 function drawLocator() {
   if (!packageData) return;
   renderPacificLocator($('locator-chart'), packageData.observations.regions || {}, {land:basemap});
+  const hero = $('hero-locator');
+  renderPacificLocator(hero, packageData.observations.regions || {}, {land:basemap});
+  const svg = hero.querySelector('svg');
+  if (svg) {
+    for (const node of svg.querySelectorAll('[id]')) {
+      const old = node.id, next = `hero-${old}`;
+      node.id = next;
+      for (const element of svg.querySelectorAll('[clip-path],[aria-labelledby]')) {
+        for (const attribute of ['clip-path','aria-labelledby']) {
+          const value = element.getAttribute(attribute);
+          if (value) element.setAttribute(attribute, value.replaceAll(old, next));
+        }
+      }
+    }
+    const label = svg.getAttribute('aria-labelledby');
+    if (label) svg.setAttribute('aria-labelledby', label.split(' ').map(id => `hero-${id}`).join(' '));
+  }
   $('locator-note').textContent = basemap
     ? 'Pacific-centred geographic locator. Land: Natural Earth 1:110m, public domain. Boxes show exact analysis bounds; land is context only, not the analytical ocean mask.'
     : 'Schematic longitude / latitude fallback: the geographic basemap is unavailable. Boxes show analysis bounds; no coastline or land mask is depicted.';
+}
+
+function drawReferenceFindings(reference) {
+  const rows = group => ['eep','nwp'].map(id => ({id, label: id.toUpperCase(), result: group?.[id]}));
+  renderIntervals($('reference-chlorophyll'), rows(reference?.results?.chlor_a), 'chlor_a');
+  renderIntervals($('reference-temperature'), rows(reference?.results?.sst), 'sst');
+  renderIntervals($('reference-comparison'), [{id:'comparison', label:'EEP / NWP', result:reference?.results?.chlor_a?.comparison}], 'comparison');
+  $('reference-comparison').querySelector('.interval-caption')?.remove();
 }
 
 function drawIntervals() {
   const ready = state?.phase === 'ready';
   renderIntervals($('uncertainty-chart'), visibleRegions(state.region).map(id => ({id,label:id.toUpperCase(),result:ready?state.results?.[id]:null})), state.variable);
   renderIntervals($('comparison-interval'), [{id:'comparison',label:'EEP / NWP',result:ready?state.results?.comparison:null}], 'comparison');
+  $('comparison-interval').querySelector('.interval-caption')?.remove();
 }
 
 function el(tag, text, className) {
@@ -324,6 +350,7 @@ async function start() {
   $('load-state').querySelector('p').textContent='Loading the archived observations and source record…';
   $('retry').hidden=true;
   $('investigation-body').hidden=true;
+  for(const id of ['reference-chlorophyll','reference-temperature','reference-comparison']) $(id).textContent='Loading reference findings…';
   for(const id of ['copy-link','export-selection','example-sst','example-chlorophyll']) $(id).disabled=true;
   chartModel=null;
   try {
@@ -339,6 +366,7 @@ async function start() {
     const restored=parseUrlState(location.href,loaded.reference.interval,availability);
     state=restored.state;
     renderMetadata();
+    drawReferenceFindings(loaded.reference);
     $('control-fields').disabled=false;
     for(const id of ['example-sst','example-chlorophyll']) $(id).disabled=false;
     $('load-state').hidden=true;
@@ -357,6 +385,7 @@ async function start() {
     packageData=null; state=null; chartModel=null;
     for(const id of ['example-sst','example-chlorophyll']) $(id).disabled=true;
     $('reference-summary').textContent='The fixed reference finding is unavailable until the archive loads. Retry loading records below.';
+    for(const id of ['reference-chlorophyll','reference-temperature','reference-comparison']) $(id).textContent='Reference findings unavailable. Retry loading records above.';
     $('load-state').querySelector('p').textContent=`The observation archive could not be loaded. ${error.message} Check that the complete data package is served with this page, then retry.`;
     $('retry').hidden=false;
     $('investigation-mode').textContent='Records unavailable';
@@ -425,6 +454,7 @@ if(typeof ResizeObserver!=='undefined') new ResizeObserver(entries=>{
     renderChart($('chart'),chartModel);
     drawLocator();
     drawIntervals();
+    if (packageData?.reference) drawReferenceFindings(packageData.reference);
   }
 }).observe($('chart'));
 start();

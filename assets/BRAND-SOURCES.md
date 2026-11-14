@@ -1,0 +1,5 @@
+﻿# V4 brand assets
+
+The O/current symbol in `logo-mark.svg` and `favicon.svg` is original project artwork, created for The Ocean's Hidden Response. It is a project identity and does not represent NASA or endorsement. The page uses the same geometry inline, with the approved teal stroke normally and the system link color in forced-colors mode. The favicon uses a navy background for visibility in browser tabs. `favicon-16x16.png`, `favicon-32x32.png`, `favicon.ico`, `apple-touch-icon.png`, and `social-preview.png` are derived locally by `node tools/generate-brand-assets.mjs` using the original SVG and system font rendering. No third-party image or icon artwork is included. The social image is editorial, not analytical data.
+
+The website uses a system sans-serif stack, so there is no bundled font or external font request. Natural Earth map attribution and reuse terms are recorded in `MAP-SOURCES.md`. The Open Graph image uses a relative local path; actual social crawler resolution remains to be checked on the eventual deployment URL.
