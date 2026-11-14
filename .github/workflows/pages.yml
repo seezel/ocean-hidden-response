@@ -1,0 +1,106 @@
+name: Verify and publish the ocean archive
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Pull requests validate the source without publishing it.
+# Only an approved change on main can deploy the static website.
+permissions:
+  contents: read
+
+concurrency:
+  group: ocean-pages-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Test science and package static site
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.14'
+
+      - name: Install JavaScript dependencies
+        run: npm ci
+
+      # Offline verification and packaging need only the scientific libraries
+      # imported by the checked-in tests and export script, not CDS/Earthdata secrets.
+      - name: Install scientific verification dependencies
+        run: |
+          python -m pip install \
+            'numpy==2.5.4' \
+            'scipy==1.18.1' \
+            'statsmodels==0.15.0' \
+            'requests==2.34.2' \
+            'netCDF4==1.7.5.1.post1' \
+            'pytest==9.2.0'
+
+      - name: Run JavaScript tests
+        run: npm test
+
+      - name: Run Python tests
+        run: python -m pytest -q
+
+      - name: Verify frozen reference results and input hash
+        run: python -m science.export --verify
+
+      - name: Generate public reproduction downloads
+        run: python -m science.export --package
+
+      - name: Build the public website
+        run: npm run build
+
+      - name: Check deployable files and exclusions
+        run: |
+          test -f dist/index.html
+          test -f dist/assets/styles.css
+          test -f dist/data/observations.json
+          test -f dist/data/reference-results.json
+          test -f dist/data/provenance.json
+          test -f dist/downloads/observations.csv
+          test -f dist/downloads/reproduction.zip
+          test ! -e dist/.git
+          test ! -e dist/.env
+          test ! -e dist/.netrc
+          test ! -e dist/data/raw
+
+      - name: Configure GitHub Pages
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        uses: actions/configure-pages@v5
+
+      - name: Upload verified website
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist
+
+  deploy:
+    name: Publish approved site
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
