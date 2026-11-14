@@ -5,6 +5,9 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 export const PUBLIC_FILES = Object.freeze([
   'index.html', 'assets/styles.css', 'src/app.js', 'src/charts.js', 'src/data.js',
   'src/trends.js', 'src/ui-state.js', 'data/observations.json',
+  'src/uncertainty.js', 'src/locator.js', 'assets/ne_110m_land.geojson',
+  'src/url-state.js', 'src/selection-export.js',
+  'assets/map-source.json', 'assets/MAP-SOURCES.md',
   'data/reference-results.json', 'data/provenance.json',
   'downloads/observations.csv', 'downloads/reproduction.zip',
 ]);

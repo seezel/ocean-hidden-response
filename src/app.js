@@ -1,12 +1,42 @@
 import { loadData, selectRecords } from './data.js';
 import { fitTrend, compareTrends, MODEL_VERSION } from './trends.js';
-import { createState, reduceState, visibleRegions, validateWindow } from './ui-state.js';
-import { renderChart, renderLegend, renderLocator, regionBounds, monthLabel, monthIndex, monthKey } from './charts.js';
+import { reduceState, visibleRegions, validateWindow } from './ui-state.js';
+import { renderChart, renderLegend, regionBounds, monthLabel, monthIndex, monthKey } from './charts.js';
+import { renderIntervals } from './uncertainty.js';
+import { loadBasemap, renderPacificLocator } from './locator.js';
+import { parseUrlState, serializeUrlState } from './url-state.js';
+import { selectionCsv, selectionFilename } from './selection-export.js';
 
 const $ = id => document.getElementById(id);
 const names = { eep: 'Eastern Equatorial Pacific', nwp: 'Northwest Pacific' };
 let packageData = null, state = null, chartModel = null, request = null;
 let observationTableDirty = true;
+let basemap = null;
+let selectionRevision = 0;
+
+function syncUrl(replace=false) {
+  if(state?.phase!=='ready') return;
+  try {
+    const url=serializeUrlState(location.href,state);
+    if(url!==location.href) history[replace?'replaceState':'pushState'](null,'',url);
+  } catch {
+    $('share-status').textContent='Browser history is unavailable. The investigation still works; use the copy link control to share applied controls.';
+  }
+}
+
+function drawLocator() {
+  if (!packageData) return;
+  renderPacificLocator($('locator-chart'), packageData.observations.regions || {}, {land:basemap});
+  $('locator-note').textContent = basemap
+    ? 'Pacific-centred geographic locator. Land: Natural Earth 1:110m, public domain. Boxes show exact analysis bounds; land is context only, not the analytical ocean mask.'
+    : 'Schematic longitude / latitude fallback: the geographic basemap is unavailable. Boxes show analysis bounds; no coastline or land mask is depicted.';
+}
+
+function drawIntervals() {
+  const ready = state?.phase === 'ready';
+  renderIntervals($('uncertainty-chart'), visibleRegions(state.region).map(id => ({id,label:id.toUpperCase(),result:ready?state.results?.[id]:null})), state.variable);
+  renderIntervals($('comparison-interval'), [{id:'comparison',label:'EEP / NWP',result:ready?state.results?.comparison:null}], 'comparison');
+}
 
 function el(tag, text, className) {
   const element = document.createElement(tag);
@@ -66,10 +96,16 @@ function dispatch(action) {
   state=reduceState(state,action);
   calculate();
   render();
+  syncUrl();
 }
 
 function render() {
+  selectionRevision++;
   const {variable,region,start,end,phase}=state;
+  for(const id of ['copy-link','export-selection']) $(id).disabled=phase!=='ready';
+  $('share-status').textContent=phase==='ready'?'':'Apply a valid window before sharing or downloading selected observations.';
+  $('share-fallback').hidden=true;
+  $('share-url').value='';
   $('variable').value=variable;
   $('region').value=region;
   $('start').value=start;
@@ -90,6 +126,10 @@ function render() {
   $('trend-notes').replaceChildren();
   $('comparison-content').replaceChildren();
   $('comparison').hidden=variable!=='chlor_a';
+  $('active-source').textContent=variable==='chlor_a'
+    ? 'Main chlorophyll record: NOAA VIIRS. NASA MODIS Aqua is a separate one-month verification, not this trend series.'
+    : 'Temperature record: NASA JPL MUR foundation SST, distributed through a NOAA monthly composite; sampled regional aggregation with native-resolution checks.';
+  drawIntervals();
   observationTableDirty=true;
   $('observation-rows').replaceChildren();
   if(phase!=='ready') {
@@ -204,7 +244,11 @@ function renderQuality(series) {
 function renderMetadata() {
   const {observations,provenance,reference}=packageData;
   for(const key of ['eep','nwp']) $('region').querySelector(`option[value="${key}"]`).textContent=`${regionName(key)} (${key.toUpperCase()})`;
-  renderLocator($('locator-chart'),observations.regions||{});
+  drawLocator();
+  const finding=reference.results.chlor_a;
+  const comparison=finding.comparison;
+  const uncertain=comparison.ci95[0]<=0 && comparison.ci95[1]>=0;
+  $('reference-summary').textContent=`Fixed reference, ${monthLabel(reference.interval.start)} to ${monthLabel(reference.interval.end)}: chlorophyll-a estimates are ${signed(finding.eep.trendPerDecade,1)}% per decade in EEP and ${signed(finding.nwp.trendPerDecade,1)}% in NWP. ${uncertain?'The direct paired comparison is inconclusive: its 95% interval includes zero.':'Read the direct paired comparison and its uncertainty below.'} This finding stays fixed when you explore other dates.`;
   $('region-bounds').replaceChildren();
   const longitude=value=>`${Math.abs(value)}°${value<0?'W':'E'}`;
   const latitude=value=>value===0?'0°':`${Math.abs(value)}°${value<0?'S':'N'}`;
@@ -280,6 +324,7 @@ async function start() {
   $('load-state').querySelector('p').textContent='Loading the archived observations and source record…';
   $('retry').hidden=true;
   $('investigation-body').hidden=true;
+  for(const id of ['copy-link','export-selection','example-sst','example-chlorophyll']) $(id).disabled=true;
   chartModel=null;
   try {
     const loaded=await loadData('./data/',activeRequest.signal);
@@ -291,13 +336,17 @@ async function start() {
       const months=loaded.observations.records.filter(row=>row.variable===variable).map(row=>row.month).sort();
       if(months.length) availability[variable]={min:months[0],max:months.at(-1)};
     }
-    state=createState(loaded.reference.interval,availability);
+    const restored=parseUrlState(location.href,loaded.reference.interval,availability);
+    state=restored.state;
     renderMetadata();
     $('control-fields').disabled=false;
+    for(const id of ['example-sst','example-chlorophyll']) $(id).disabled=false;
     $('load-state').hidden=true;
     $('investigation-body').hidden=false;
     calculate();
     render();
+    syncUrl(true);
+    if(restored.message) $('share-status').textContent=restored.message;
     if(!loaded.observations.records.length) {
       $('load-state').hidden=false;
       $('load-state').querySelector('p').textContent='The package contains no observations. Source information remains available below. Retry after replacing the data package.';
@@ -306,6 +355,8 @@ async function start() {
   } catch(error) {
     if(error.name==='AbortError'||activeRequest!==request) return;
     packageData=null; state=null; chartModel=null;
+    for(const id of ['example-sst','example-chlorophyll']) $(id).disabled=true;
+    $('reference-summary').textContent='The fixed reference finding is unavailable until the archive loads. Retry loading records below.';
     $('load-state').querySelector('p').textContent=`The observation archive could not be loaded. ${error.message} Check that the complete data package is served with this page, then retry.`;
     $('retry').hidden=false;
     $('investigation-mode').textContent='Records unavailable';
@@ -320,6 +371,50 @@ $('variable').addEventListener('change',event=>dispatch({type:'variable',value:e
 $('region').addEventListener('change',event=>dispatch({type:'region',value:event.target.value}));
 for(const id of ['start','end']) $(id).addEventListener('input',()=>dispatch({type:'dates',start:$('start').value,end:$('end').value}));
 $('restore').addEventListener('click',()=>dispatch({type:'reset'}));
+for(const variable of ['chlor_a','sst']) $(variable==='sst'?'example-sst':'example-chlorophyll').addEventListener('click',()=>{
+  if(!state) return;
+  state=reduceState(state,{type:'reset'});
+  dispatch({type:'variable',value:variable});
+});
+$('copy-link').addEventListener('click',async()=>{
+  if(state?.phase!=='ready') return;
+  const revision=selectionRevision, url=serializeUrlState(location.href,state);
+  try {
+    await navigator.clipboard.writeText(url);
+    if(revision===selectionRevision) $('share-status').textContent='Investigation link copied.';
+  } catch {
+    if(revision!==selectionRevision) return;
+    $('share-fallback').hidden=false;
+    $('share-url').value=url;
+    $('share-url').focus();
+    $('share-url').select();
+    $('share-status').textContent='Automatic copying is unavailable. Select and copy the link shown below.';
+  }
+});
+$('export-selection').addEventListener('click',()=>{
+  if(state?.phase!=='ready') return;
+  try {
+    const blob=new Blob([selectionCsv(packageData.observations,state)],{type:'text/csv;charset=utf-8'});
+    const url=URL.createObjectURL(blob), anchor=el('a');
+    anchor.href=url;
+    anchor.download=selectionFilename(state);
+    document.body.append(anchor);
+    anchor.click();
+    anchor.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),1000);
+  } catch {
+    $('share-status').textContent='The selected CSV could not be created. Restore the reference selection and try again.';
+  }
+});
+window.addEventListener('popstate',()=>{
+  if(!packageData || !state) return;
+  const restored=parseUrlState(location.href,packageData.reference.interval,state.availability);
+  state=restored.state;
+  calculate();
+  render();
+  syncUrl(true);
+  if(restored.message) $('share-status').textContent=restored.message;
+});
 $('retry').addEventListener('click',start);
 $('observation-details').addEventListener('toggle',()=>{if($('observation-details').open) renderObservationTable();});
 let lastChartWidth=0;
@@ -328,7 +423,9 @@ if(typeof ResizeObserver!=='undefined') new ResizeObserver(entries=>{
   if(width!==lastChartWidth && chartModel) {
     lastChartWidth=width;
     renderChart($('chart'),chartModel);
-    renderLocator($('locator-chart'),packageData.observations.regions||{});
+    drawLocator();
+    drawIntervals();
   }
 }).observe($('chart'));
 start();
+loadBasemap().then(land=>{basemap=land;drawLocator();}).catch(()=>drawLocator());

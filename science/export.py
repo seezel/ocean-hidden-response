@@ -123,6 +123,10 @@ def verify():
 def package():
     paths = ["README.md", "LICENSE", "requirements.txt", "package.json", "PRODUCT.md", "DESIGN.md",
              "package-lock.json", "index.html", "assets/styles.css", "tools/build.mjs", "docs/statistics-report.md",
+             "assets/ne_110m_land.geojson", "assets/map-source.json", "assets/MAP-SOURCES.md",
+             "playwright.config.js", "tests/browser/investigation.spec.js", "tests/browser/enhancement.spec.js",
+             "docs/website-release-audit.md", "docs/website-enhancement-design.md", "docs/geography-report.md",
+             "docs/submission-alignment-v3.md",
              "data/observations.json", "data/reference-results.json", "data/provenance.json",
              "data/spatial-validation.json", "data/nasa-verification.json", "data/README.md", "downloads/observations.csv"]
     paths.extend(str(path.relative_to(ROOT)).replace("\\", "/") for folder, pattern in

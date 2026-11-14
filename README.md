@@ -4,6 +4,12 @@ An English-language static investigation of surface chlorophyll-a and sea surfac
 
 The application uses authentic licensed monthly observations, a seasonally adjusted trend model, uncertainty estimates that account for temporal dependence, and a direct comparison of regional chlorophyll trends. Custom date windows recalculate the supported statistics in the browser. They are labelled exploratory. Insufficient selections show observations and a reason instead of significance.
 
+The page opens with the research question and a clearly fixed reference finding. Its optional one-minute guide includes working chlorophyll and temperature examples. Regional trend intervals and the direct paired comparison use separate, labelled scales with zero references and numerical equivalents. A locally bundled Natural Earth land map locates the exact region bounds; it is contextual geography, not the analytical ocean mask.
+
+Applied measure, region and dates are shareable in the URL. Invalid links restore the reference selection with an explanation. Draft dates clear results and disable sharing/export until applied. The selected-observation CSV retains explicit nulls, calendar gaps, units, coverage, cell counts and provenance. Row status describes input screening only, not whole-window inferential eligibility. It contains no fitted results. The full archive CSV and reproduction ZIP remain available separately.
+
+V3 changes are local and await human release review. See [the release audit](docs/website-release-audit.md) for verification, known limits and safe PR incorporation, and [map sources](assets/MAP-SOURCES.md) for the public-domain basemap attribution.
+
 ## Run locally
 
 Python and Node are development tools only; the public application has no backend, accounts, trackers, or third-party CDN dependencies.
@@ -24,6 +30,8 @@ npm run build
 Open http://127.0.0.1:8000. On macOS/Linux use `python3` and `.venv/bin/python` instead of the Windows virtual-environment path. The recorded development environment is Python 3.14 and Node 24. Do not use the broken unrelated MSYS2 `python` command found on the original Windows PATH.
 
 The `dist/` directory is the public static artifact. The build copies an explicit whitelist, excluding raw downloads, authentication files, Git metadata, virtual environments and test fixtures. Serve it through HTTP; opening an ES-module application directly with a `file:` URL is not supported.
+
+After starting the server, run `npx --no-install playwright test` for browser checks. The checked-in configuration uses installed Windows Chrome; on another platform, set its executable path or use a locally installed Playwright browser. JavaScript unit tests run one file at a time to avoid unnecessary memory pressure on the target laptop. No authenticated acquisition is needed for website verification.
 
 ## Observations and regions
 

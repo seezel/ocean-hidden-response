@@ -18,7 +18,7 @@ Pending separate user authorization and verified public deployment. Do not submi
 
 **Problem and audience.** Satellite ocean records are difficult to interpret without clear region definitions, appropriate statistical models and source provenance. This application supports scientifically curious visitors, students, researchers and policymakers who want to inspect regional surface changes without confusing a visual slope with reliable evidence.
 
-**What visitors do.** Choose chlorophyll-a or temperature, one or both fixed Pacific regions, and inclusive start/end months. The chart shows the observations and gaps. Eligible windows show trend estimates and confidence intervals. Short or incomplete windows keep observations visible and explain why significance is unavailable. A reference reset restores the verified analysis. Expandable panels describe quality, methods and exact products, with CSV and executable reproduction downloads.
+**What visitors do.** Start with the scientific question and fixed reference finding, or follow the optional one-minute guide and its working examples. Choose chlorophyll-a or temperature, one or both fixed Pacific regions, and inclusive start/end months. The chart shows observations and gaps. Separate interval graphics show regional trend uncertainty and the direct paired comparison, with exact numerical equivalents. A Natural Earth land map locates the fixed regions without implying a causal experiment. Short or incomplete windows retain observations and explain why inference is unavailable. Restore reference resets the investigation. Applied controls can be shared as a validated URL, and a selected-observation CSV preserves gaps and source metadata. Expandable panels describe quality, methods and products; full CSV and executable reproduction downloads remain available.
 
 **Regions and record.** EEP is 120°W–90°W, 5°S–5°N. NWP is 125°E–150°E, 2°N–10°N. The reference window is January 2013–December 2025, with 154 matched valid months out of 156 calendar months. The packaged historical record covers 2012–2025. The authenticated Copernicus C3S v6.0 request succeeded after local configuration was updated, but its January 2013 global file is 177,604,652 bytes, above the prespecified 96 MiB feasibility cap. The documented interface offers no regional subsetting. We retained the already approved NOAA VIIRS fallback and disclosed the shorter record.
 
@@ -54,5 +54,6 @@ Pending separate user authorization and verified public deployment. Do not submi
 - Numerical tools: https://numpy.org/ , https://scipy.org/ , https://www.statsmodels.org/ , https://unidata.github.io/netcdf4-python/
 - Browser verification: https://playwright.dev/
 - Visual inspiration: https://archive.org/ . Original layout and identity; no Internet Archive brand assets used.
+- Geographic context: Natural Earth 1:110m land, public domain; pinned v5.1.2 asset and hash in assets/MAP-SOURCES.md. This map does not supply the analytical ocean mask.
 
 Check current portal requirements and the five local criteria: Impact, Creativity, Validity, Relevance and Presentation. No numerical judging weights or award claims are assumed.

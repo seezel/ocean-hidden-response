@@ -10,7 +10,7 @@
 2. **NASA JPL MUR fv04.1-derived monthly SST.** Daily foundation-temperature analysis produced by NASA JPL under MEaSUREs/GHRSST, composited monthly by NOAA ERD. Source DOI 10.5067/GHGMR-4FJ04. The NOAA mirror permits free use and redistribution without warranty. Units: degrees Celsius. Source: https://coastwatch.pfeg.noaa.gov/erddap/griddap/jplMURSST41mday.html .
 3. **NASA MODIS Aqua L3 mapped monthly chlorophyll, R2022.0 collection.** NASA GSFC Ocean Biology Processing Group, DOI 10.5067/AQUA/MODIS/L3M/CHL/2022. January 2013 granule: `AQUA_MODIS.20130101_20130131.L3m.MO.CHL.chlor_a.4km.nc`, NASA CMR G3509017444-OB_CLOUD. NASA Earth science observations are openly shared without restriction, with source attribution. The file was obtained through NOAA's public `erdMH1chlamday_R2022SQ` mirror and checked against NASA granule metadata. Collection: https://www.earthdata.nasa.gov/data/catalog/ob-cloud-modisa-l3m-chl-2022.0 .
 
-These observations are third-party source data and derived records; the project Apache-2.0 code licence does not replace their policies. No Copernicus observations are redistributed because none entered the analysis. The unused preferred source and its failed local feasibility check are disclosed separately.
+These observations are third-party source data and derived records; the project Apache-2.0 code licence does not replace their policies. No Copernicus observations are redistributed because none entered the analysis. The authenticated preferred-source request succeeded, but its global file exceeded the prespecified transfer cap; the feasibility decision is disclosed separately.
 
 ## Processing
 

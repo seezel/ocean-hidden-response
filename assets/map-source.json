@@ -1,0 +1,17 @@
+{
+  "asset": "assets/ne_110m_land.geojson",
+  "dataset": "Natural Earth 1:110m Physical Vectors, Land",
+  "repository_release": "v5.1.2",
+  "source_url": "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/v5.1.2/geojson/ne_110m_land.geojson",
+  "repository_url": "https://github.com/nvkelso/natural-earth-vector/tree/v5.1.2",
+  "terms_url": "https://www.naturalearthdata.com/about/terms-of-use/",
+  "retrieved_date": "2026-11-14",
+  "license": "Public domain",
+  "attribution": "Made with Natural Earth. Free vector and raster map data @ naturalearthdata.com.",
+  "sha256": "9e0729ee253ca7d7a5c4ae9395fb1902264c5377c52e224d13dd85010e2835d9",
+  "bytes": 138160,
+  "feature_count": 127,
+  "geometry_types": ["Polygon"],
+  "modifications": "None. Original GeoJSON bytes are bundled locally. Projection and viewport clipping occur only when rendered.",
+  "purpose": "Geographic context for the fixed Pacific analysis regions; not a satellite observation or a scientific analysis input."
+}

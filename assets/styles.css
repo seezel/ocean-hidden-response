@@ -109,6 +109,24 @@ caption { text-align: left; padding: .4rem 0; color: var(--secondary); }
 .locator svg { width: 100%; height: auto; display: block; margin: .5rem 0 1rem; }
 #region-bounds p { margin: .5rem 0; font-size: .85rem; font-variant-numeric: tabular-nums; }
 .muted { color: var(--secondary); }
+.guide { max-width: 75ch; margin-block: 1.25rem; }
+.guide li { margin-block: .6rem; }
+.example-actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-block: 1rem; }
+#research-question { font-family: Georgia, serif; font-size: 1.4rem; color: var(--ink); }
+#reference-summary { max-width: 75ch; font-weight: 600; }
+.source-strip { max-width: 80ch; font-size: .9rem; margin-block: 1rem; }
+.interval-chart { max-width: 48rem; margin-block: 1.2rem; }
+.interval-chart svg { display: block; width: 100%; height: auto; overflow: visible; }
+.interval-chart text { fill: var(--ink); font: 13px Arial, sans-serif; }
+.interval-chart .interval-label { font-weight: 600; font-size: 14px; }
+.interval-zero { stroke: var(--secondary); stroke-width: 1; stroke-dasharray: 4 4; }
+.interval-caption { font-size: .85rem; max-width: 70ch; }
+.selection-actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-block: .75rem; }
+.selection-note, #share-status { font-size: .85rem; max-width: 75ch; }
+.table-hint { font-size: .85rem; color: var(--secondary); }
+#share-status:empty { display: none; }
+#share-fallback { max-width: 75ch; margin-block: 1rem; }
+#share-url { display: block; width: 100%; }
 .source-entry { padding: .5rem 0 1rem; border-bottom: 1px solid var(--rule); }
 .source-entry h4 { margin: .6rem 0; font-size: 1rem; }
 .source-entry dl { display: grid; grid-template-columns: 6.5rem minmax(0, 1fr); gap: .4rem .6rem; font-size: .85rem; }
