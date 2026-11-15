@@ -8,7 +8,7 @@ The page opens with the research question and a clearly fixed reference finding.
 
 Applied measure, region and dates are shareable in the URL. Invalid links restore the reference selection with an explanation. Draft dates clear results and disable sharing/export until applied. The selected-observation CSV retains explicit nulls, calendar gaps, units, coverage, cell counts and provenance. Row status describes input screening only, not whole-window inferential eligibility. It contains no fitted results. The full archive CSV and reproduction ZIP remain available separately.
 
-V3 changes are local and await human release review. See [the release audit](docs/website-release-audit.md) for verification, known limits and safe PR incorporation, and [map sources](assets/MAP-SOURCES.md) for the public-domain basemap attribution.
+The verified V4 website is publicly deployed at [The Ocean's Hidden Response](https://seezel.github.io/ocean-hidden-response/). The deployed site uses a strict build allowlist. [Map sources](assets/MAP-SOURCES.md) document the public-domain basemap attribution; [statistical methods](docs/statistics-report.md) and [data provenance](data/README.md) remain publicly available.
 
 ## Run locally
 
@@ -27,7 +27,7 @@ npm run build
 & .\.venv\Scripts\python.exe -m http.server 8000 --bind 127.0.0.1 --directory dist
 ```
 
-Open http://127.0.0.1:8000. On macOS/Linux use `python3` and `.venv/bin/python` instead of the Windows virtual-environment path. The recorded development environment is Python 3.14 and Node 24. Do not use the broken unrelated MSYS2 `python` command found on the original Windows PATH.
+Open http://127.0.0.1:8000. On macOS/Linux use `python3` and `.venv/bin/python` instead of the Windows virtual-environment path. Use a supported Python and Node.js installation. Local browser checks require an installed browser compatible with the Playwright configuration.
 
 The `dist/` directory is the public static artifact. The build copies an explicit whitelist, excluding raw downloads, authentication files, Git metadata, virtual environments and test fixtures. Serve it through HTTP; opening an ES-module application directly with a `file:` URL is not supported.
 
@@ -85,13 +85,15 @@ Inference requires at least 120 valid months, 120 calendar months, 85% completen
 
 Full formulas and verification evidence: `docs/statistics-report.md`. Region-specific observations cannot establish that SST, ENSO or climate change caused the observed chlorophyll changes.
 
-## Build and competition record
+## Public release and repository hygiene
 
-The project workspace was empty during PREP MODE. START BUILD was received after the event gate; the first build clock was verified at November 14, 2026, 09:03 WIB. This project contains no pre-event implementation history. Local Windows work was used; Codex Cloud was deferred.
+The project is deployed at https://seezel.github.io/ocean-hidden-response/ and is built automatically by GitHub Actions after the source verification passes. The build copies an explicit set of public files; it does not copy Git metadata, credentials, raw satellite caches, internal development notes or source test fixtures.
 
-Codex assisted with code, data-processing scripts, statistical checks, interface construction, documentation and draft submission materials. This assistance must be disclosed in the submission. AI tools are not described as open-source tools. Human participants retain responsibility for scientific claims, rights, final review, publication and submission.
+This repository contains the website source, scientific processing code, tests, reproducibility data, documented methods and licensing information. Its downloadable reproduction archive includes the public methods and source required to verify the analyses, without private agent instructions or outdated submission materials.
 
-Public deployment, public source publication and NASA submission require separate user authorization. A working local build is not a submitted project. The seven-slide deck and submission text are drafts until reviewed. No participant names, likenesses or voices are embedded in the demo.
+Keep NASA Earthdata, Copernicus CDS and all other credentials in local user-scoped configuration or a secure secret store. Never commit access tokens, private keys, personal records, agent prompts or unpublished submission drafts. The repository's automated test suite includes a tracked-file and obvious-secret-signature guard.
+
+AI assistance was used for implementation, verification, interface development and documentation. It must be disclosed accurately in the competition submission. The team remains responsible for scientific claims, licences and submission.
 
 ## Licensing and sources
 

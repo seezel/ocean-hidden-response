@@ -1,47 +1,44 @@
-.venv/
+# Dependencies and generated outputs
 node_modules/
-dist/
+.venv/
+venv/
 __pycache__/
 .pytest_cache/
 .cache/
 .superpowers/
 .worktrees/
-.env*
-!.env.example
-.cdsapirc
-.netrc
-_netrc
-data/raw/
-artifacts/private/
-artifacts/reviews/
+dist/
+build/
+coverage/
+*.log
+*.zip
+test-results/
 artifacts/browser-results/
 artifacts/screenshots/
-test-results/
-*.log
+artifacts/reviews/
+artifacts/private/
+artifacts/submission/slides/
+.chart-data-*/
+downloads/
 
-# Private credentials
+# Data-provider credentials and private local settings
 .env
 .env.*
 !.env.example
 .cdsapirc
 .netrc
 _netrc
+*.pem
+*.p12
+*.pfx
+*.key
+credentials.json
+service-account*.json
+secrets/
+.secrets/
+data/access-status.json
 
-# Dependencies and environments
-node_modules/
-.venv/
-venv/
-__pycache__/
-.pytest_cache/
-
-# Build and temporary files
-dist/
-build/
-coverage/
-*.log
-*.zip
-
-# Large scientific source data
+# Raw scientific data and temporary acquisition files
 data/raw/
 *.nc
 *.nc4
@@ -49,18 +46,31 @@ data/raw/
 *.hdf
 *.zarr/
 
+# Local agent instructions, private prompts and internal work records
+AGENTS.md
+**/AGENTS.md
+CODEX.md
+**/CODEX.md
+CLAUDE.md
+**/CLAUDE.md
+GEMINI.md
+**/GEMINI.md
+.codex/
+.claude/
+.agents/
+.cursor/
+.windsurf/
+*.prompt.md
+/PRODUCT.md
+/DESIGN.md
+docs/*-task.md
+docs/*-ledger.md
+docs/website-*-audit.md
+docs/v*-review-audit.md
+docs/website-enhancement-design.md
+docs/*-integration-status.md
+artifacts/submission/submission-draft*.md
+
 # Operating system files
 .DS_Store
 Thumbs.db
-
-# Temporary data-processing directories
-.chart-data-*/
-
-# Local scientific data downloads
-downloads/
-
-# Local access diagnostics
-data/access-status.json
-
-# Generated slide previews
-artifacts/submission/slides/
