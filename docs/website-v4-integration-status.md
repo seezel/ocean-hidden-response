@@ -2,7 +2,7 @@
 
 The user approved the V4 prototype and authorized integration. The working application retains its investigation, model, data, uncertainty, map fallback, accessible tables, sharing and exports. The V4 hero, responsive navigation, map, regional context, fixed-reference findings and methods follow the approved visual direction. Reference panels use frozen results and remain fixed when a custom window is selected. The selected-window results remain available in the investigation for interpretation.
 
-The logo and favicon are original project artwork; `assets/BRAND-SOURCES.md` documents generated raster assets and Natural Earth attribution. Icons and social-preview assets are local and are included in the static build and reproduction package. The Open Graph image uses a relative URL and remains unverified with an actual social crawler. Typography uses system sans-serif, without a font download.
+The logo and favicon are original project artwork; `assets/BRAND-SOURCES.md` documents generated raster assets and Natural Earth attribution. Icons and social-preview assets are local and are included in the static build and reproduction package. The Open Graph image now uses the intended default repository Pages HTTPS target, documented in the asset inventory. Actual deployment-origin confirmation and social-crawler verification remain pending. Typography uses system sans-serif, without a font download.
 
 ## Verification and limitations
 
