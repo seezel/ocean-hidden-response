@@ -1,13 +1,33 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
-const tracked = execFileSync('git', ['ls-files', '-z'], { cwd: root, encoding: 'utf8' })
-  .split('\0').filter(Boolean);
+
+function listPublicSourceFiles() {
+  if (existsSync(join(root, '.git'))) {
+    return execFileSync('git', ['ls-files', '-z'], { cwd: root, encoding: 'utf8' })
+      .split('\0').filter(Boolean);
+  }
+  // The downloadable reproduction archive intentionally omits .git.
+  // Verify extracted source files there instead of requiring Git metadata.
+  const files = [];
+  const skipped = new Set(['node_modules', '.venv', 'venv', 'dist', 'build', 'downloads', 'coverage', '__pycache__', '.pytest_cache']);
+  function visit(directory = '') {
+    for (const entry of readdirSync(join(root, directory), { withFileTypes: true })) {
+      if (entry.isSymbolicLink()) continue;
+      const name = directory ? directory + '/' + entry.name : entry.name;
+      if (entry.isDirectory() && !skipped.has(entry.name)) visit(name);
+      else if (entry.isFile()) files.push(name);
+    }
+  }
+  visit();
+  return files;
+}
+const tracked = listPublicSourceFiles();
 
 const forbiddenPaths = [
   /(?:^|\/)(?:AGENTS|CODEX|CLAUDE|GEMINI)\.md$/i,
