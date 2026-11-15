@@ -121,19 +121,21 @@ def verify():
 
 
 def package():
-    paths = ["README.md", "LICENSE", "requirements.txt", "package.json", "PRODUCT.md", "DESIGN.md",
-             "package-lock.json", "index.html", "assets/styles.css", "tools/build.mjs", "docs/statistics-report.md",
-             "assets/ne_110m_land.geojson", "assets/map-source.json", "assets/MAP-SOURCES.md", "assets/BRAND-SOURCES.md", "assets/logo-mark.svg", "assets/favicon.svg", "assets/favicon.ico",
-             "assets/favicon-16x16.png", "assets/favicon-32x32.png", "assets/apple-touch-icon.png",
-             "assets/social-preview.png", "tools/generate-brand-assets.mjs",
-             "tools/run-v4-browser-tests.mjs", "prototypes/v4/playwright.config.mjs",
-             "prototypes/v4/forced-colors-audit.mjs", "prototypes/v4/release-review.mjs",
-             "playwright.config.js", "tests/browser/investigation.spec.js", "tests/browser/enhancement.spec.js", "tests/browser/v4-navigation.spec.js", "tests/browser/v4-findings.spec.js", "tests/browser/v4-forced-colors.spec.js",
-             "docs/website-release-audit.md", "docs/website-enhancement-design.md", "docs/geography-report.md",
-             "docs/website-v4-integration-status.md",
-             "docs/submission-alignment-v3.md",
-             "data/observations.json", "data/reference-results.json", "data/provenance.json",
-             "data/spatial-validation.json", "data/nasa-verification.json", "data/README.md", "downloads/observations.csv"]
+    paths = [
+        "README.md", "LICENSE", "requirements.txt", "package.json", "package-lock.json",
+        "index.html", "assets/styles.css", "tools/build.mjs",
+        "assets/ne_110m_land.geojson", "assets/map-source.json", "assets/MAP-SOURCES.md",
+        "assets/BRAND-SOURCES.md", "assets/logo-mark.svg", "assets/favicon.svg",
+        "assets/favicon.ico", "assets/favicon-16x16.png", "assets/favicon-32x32.png",
+        "assets/apple-touch-icon.png", "assets/social-preview.png",
+        "tools/generate-brand-assets.mjs", "playwright.config.js",
+        "tests/browser/investigation.spec.js", "tests/browser/enhancement.spec.js",
+        "tests/browser/v4-navigation.spec.js", "tests/browser/v4-findings.spec.js",
+        "tests/browser/v4-forced-colors.spec.js", "docs/statistics-report.md",
+        "data/observations.json", "data/reference-results.json", "data/provenance.json",
+        "data/spatial-validation.json", "data/nasa-verification.json", "data/README.md",
+        "downloads/observations.csv"
+    ]
     paths.extend(str(path.relative_to(ROOT)).replace("\\", "/") for folder, pattern in
                  (("science", "*.py"), ("src", "*.js"), ("tests", "*.py"), ("tests", "*.js"), ("tests/fixtures", "*.json"))
                  for path in (ROOT / folder).glob(pattern))
